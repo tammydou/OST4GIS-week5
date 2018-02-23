@@ -171,5 +171,81 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 // the function passed to `ready` until the HTML document is fully loaded and all scripts have
 // been interpreted. It is, therefore, an example of asynchronous behavior.
 $(document).ready(function() {
-  // Do your stuff here
+  //Task 1
+  $("#main-heading").text("Philadelphia Crime Snippet");
+  $("#text-label1").text("Dispatch Date");
+  $("#text-label2").text("Location Block");
+  $("#number-label1").text("District");
+  $("#number-label2").text("Latitude");
+  $("#number-label3").text("Longitude");
+  $("#checkbox-label1").text("Drug Law Violations");
+  $("#checkbox-label2").text("Thefts");
+  $("#color-label").text("Color");
+
+  //Task 2
+  $("#text-input1").val("mm/dd/yy");
+  $("#text-input2").val("2200 BLOCK STEWART ST");
+  $("#numeric-input1").val("23");
+  $("#numeric-input2").val("39.9771532618949");
+  $("#numeric-input3").val("-75.1716547369047");
+  $("#color-input").val("#ababab");
+
+  //Task 3
+  var crimedata= {
+    "value1":undefined,
+    "value2":undefined,
+    "value3":undefined,
+    "value4":undefined,
+    "value5":undefined,
+    "value6":undefined,
+    "value7":undefined,
+    "value8":undefined,
+  };
+  var datasource=$.ajax("https://raw.githubusercontent.com/CPLN-692-401/datasets/master/json/philadelphia-crime-snippet.json");
+  var parsedata=function(data){return JSON.parse(data);};
+  var readdata=function(e){
+    datasource.done(function(data){
+      var parsed = parseData(data);
+      console.log(parsed);
+      crimedata.data=parsed;
+    });
+  };
+  //Task 4
+  $("#text-input1").prop("disabled",false);
+  $("#text-input2").prop("disabled",false);
+  $("#numeric-input1").prop("disabled",false);
+  $("#numeric-input2").prop("disabled",false);
+  $("#numeric-input3").prop("disabled",false);
+  $("#cbox-input1").prop("disabled",false);
+  $("#cbox-input2").prop("disabled",false);
+
+  //Task 5
+  $("#mybutton").click(function(e){
+    crimedata.value1 = $("#text-input1").val();
+    console.log("value1",crimedata.value1);
+    crimedata.value2 = $("#text-input2").val();
+    console.log("value2",crimedata.value2);
+    crimedata.value3 = $("#numeric-input1").val();
+    console.log("value3",crimedata.value3);
+    crimedata.value4 = $("#numeric-input2").val();
+    console.log("value4",crimedata.value4);
+    crimedata.value5 = $("#numeric-input3").val();
+    console.log("value5",crimedata.value5);
+    crimedata.value6 = $("#cbox-input1")[0].checked;
+
+    console.log("value6",crimedata.value6);
+    crimedata.value7 = $("#cbox-input2")[0].checked;
+    console.log("value7",crimedata.value7);
+    crimedata.value8 = $("#color-input").val();
+    console.log("value8",crimedata.value8);
+
+    style={
+      radius:8,
+      color:"black",
+      weight:1,
+      opacity:1,
+    };
+    markers= L.circleMarker([crimedata.value4,crimedata.value5],style);
+    markers.addTo(map).bindPopup(crimedata.value1+crimedata.value2);
+  });
 });
